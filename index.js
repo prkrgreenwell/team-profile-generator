@@ -29,12 +29,7 @@ const employeeQues = [
     type: "list",
     name: "role",
     message: "What is this employee's position?",
-    choices: [
-      { name: "Manager", value: 0 },
-      { name: "Engineer", value: 1 },
-      { name: "Intern", value: 2 },
-      { name: "Other" },
-    ],
+    choices: ["Manager", "Engineer", "Intern", "Other"],
   },
   {
     type: "input",
@@ -77,10 +72,7 @@ const enderQues = [
     type: "list",
     name: "repeat",
     message: "Would you like to add another employee?",
-    choices: [
-      { name: "Yes", value: 0 },
-      { name: "No", value: 1 },
-    ],
+    choices: ["Yes", "No"],
   },
 ];
 
@@ -105,16 +97,17 @@ function employeeInit() {
     empName = empData.name;
     id = empData.id;
     email = empData.email;
-    if (empData.role === 0) {
+    if (empData.role === "Manager") {
       managerInit(empName, id, email);
-    } else if (empData.role === 1) {
+    } else if (empData.role === "Engineer") {
       engineerInit(empName, id, email);
-    } else if (empData.role === 2) {
+    } else if (empData.role === "Intern") {
       internInit(empName, id, email);
     } else {
       const employee = new Employee(empName, id, email);
       team.push(employee);
       console.log(team);
+      repeatInit();
     }
   });
 }
