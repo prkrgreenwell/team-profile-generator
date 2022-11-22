@@ -9,6 +9,8 @@ const Engineer = require("./lib/engineer");
 const Intern = require("./lib/intern");
 const Manager = require("./lib/manager");
 
+const team = [];
+
 const companyNameQues = [
   {
     type: "input",
@@ -90,56 +92,59 @@ function init() {
   });
 }
 
+function repeatInit() {
+  inquirer.prompt(enderQues).then((res) => {
+    if (res.repeat === 0) {
+      employeeInit();
+    }
+  });
+}
+
 function employeeInit() {
-  inquirer
-    .prompt(employeeQues)
-    .then((empData) => {
-      empName = empData.name;
-      id = empData.id;
-      email = empData.email;
-      if (empData.role === 0) {
-        managerInit(empName, id, email);
-      } else if (empData.role === 1) {
-        engineerInit((empName, id, email));
-      } else if (empData.role === 2) {
-        internInit((empName, id, email));
-      } else {
-        const employee = new Employee(empName, id, email);
-      }
-    })
-    .then(() => {
-      repeatInit();
-    });
+  inquirer.prompt(employeeQues).then((empData) => {
+    empName = empData.name;
+    id = empData.id;
+    email = empData.email;
+    if (empData.role === 0) {
+      managerInit(empName, id, email);
+    } else if (empData.role === 1) {
+      engineerInit(empName, id, email);
+    } else if (empData.role === 2) {
+      internInit(empName, id, email);
+    } else {
+      const employee = new Employee(empName, id, email);
+      team.push(employee);
+      console.log(team);
+    }
+  });
 }
 
 function managerInit(name, id, email) {
   inquirer.prompt(managerQues).then((manData) => {
     const manager = new Manager(name, id, email, manData.office);
-    console.log(manager);
+    team.push(manager);
+    console.log(team);
+    repeatInit();
   });
 }
 
 function engineerInit(name, id, email) {
   inquirer.prompt(engineerQues).then((engData) => {
     const engineer = new Engineer(name, id, email, engData.github);
+    team.push(engineer);
+    console.log(team);
+    repeatInit();
   });
 }
 
 function internInit(name, id, email) {
   inquirer.prompt(internQues).then((intData) => {
     const intern = new Intern(name, id, email, intData.school);
+    team.push(intern);
+    console.log(team);
+    repeatInit();
   });
-
-  function repeatInit() {
-    inquirer.prompt(enderQues).then((res) => {
-      if (res.repeat === 0) {
-        employeeInit();
-      }
-    });
-  }
 }
 
 init();
 // TODO: Write inquirer to HTML
-
-//Inquirers kind of work, but we need to figure out how to properly use promise chaining
