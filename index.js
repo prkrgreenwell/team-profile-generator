@@ -3,13 +3,13 @@
 // TODO: Make inquirer
 const inquirer = require("inquirer");
 const fs = require("fs");
-const maker = require("./src/makePage");
+const makePage = require("./src/makePage");
+const appendPage = require("./src/appendPage");
+const endPage = require("./src/endPage");
 const Employee = require("./lib/employee");
 const Engineer = require("./lib/engineer");
 const Intern = require("./lib/intern");
 const Manager = require("./lib/manager");
-
-const team = [];
 
 const companyNameQues = [
   {
@@ -76,29 +76,42 @@ const enderQues = [
   },
 ];
 
+function startFile(filename, data) {
+  fs.writeFile(filename, data, (err) =>
+    err ? console.log(err) : console.log("")
+  );
+}
+
 function init() {
   inquirer.prompt(companyNameQues).then((compData) => {
-    const filename = `./${compData.company}.toLowerCase().split(" ").join("_").json`;
-    console.log(filename);
-    employeeInit();
+    const newData = makePage(compData);
+    const filename = `./${compData.company
+      .toLowerCase()
+      .split(" ")
+      .join("_")}.html`;
+
+    startFile(filename, newData);
+    employeeInit(filename);
   });
 }
 
 function repeatInit() {
   inquirer.prompt(enderQues).then((res) => {
-    if (res.repeat === 0) {
+    if (res.repeat === "Yes") {
       employeeInit();
+    } else {
+      //finish the file
     }
   });
 }
 
-function employeeInit() {
+function employeeInit(filename) {
   inquirer.prompt(employeeQues).then((empData) => {
     empName = empData.name;
     id = empData.id;
     email = empData.email;
     if (empData.role === "Manager") {
-      managerInit(empName, id, email);
+      managerInit(filename, empName, id, email);
     } else if (empData.role === "Engineer") {
       engineerInit(empName, id, email);
     } else if (empData.role === "Intern") {
@@ -112,11 +125,9 @@ function employeeInit() {
   });
 }
 
-function managerInit(name, id, email) {
+function managerInit(filename, name, id, email) {
   inquirer.prompt(managerQues).then((manData) => {
-    const manager = new Manager(name, id, email, manData.office);
-    team.push(manager);
-    console.log(team);
+    appendPage.addManager(filename, name, id, email, manData.office);
     repeatInit();
   });
 }
@@ -141,3 +152,5 @@ function internInit(name, id, email) {
 
 init();
 // TODO: Write inquirer to HTML
+
+// to use appendPage.addEmployee(name, id, email) etc
