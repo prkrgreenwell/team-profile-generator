@@ -1,8 +1,4 @@
-/** @format */
-function makePage(data) {
-  const compName = data.company;
-  console.log(compName);
-  return `
+
     <!DOCTYPE html>
     <html lang="en">
       <head>
@@ -14,12 +10,12 @@ function makePage(data) {
         href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"
       />
       <link rel="stylesheet" href="./style.css" />
-      <title>${compName} Team Manager</title>
+      <title>mvhs Team Manager</title>
     </head>
     <body>
       <section class="hero is-link">
         <div class="hero-body">
-          <p class="title">${compName}</p>
+          <p class="title">mvhs</p>
           <p class="subtitle">Team Roster</p>
         </div>
       </section>
@@ -27,7 +23,4 @@ function makePage(data) {
         <div
           class="column is-12-mobile is-6-tablet is-half-desktop is-one-third-widescreen is-one-quarter-fullhd"
         >  
-      `;
-}
-
-module.exports = makePage;
+      

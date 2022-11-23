@@ -1,15 +1,10 @@
 /** @format */
 
-// TODO: Make inquirer
+// TODO: Import packages
 const inquirer = require("inquirer");
-const fs = require("fs");
 const makePage = require("./src/makePage");
-const appendPage = require("./src/appendPage");
-const endPage = require("./src/endPage");
-const Employee = require("./lib/employee");
-const Engineer = require("./lib/engineer");
-const Intern = require("./lib/intern");
-const Manager = require("./lib/manager");
+const addCard = require("./src/addCard");
+const fs = require("fs");
 
 const companyNameQues = [
   {
@@ -43,30 +38,6 @@ const employeeQues = [
   },
 ];
 
-const managerQues = [
-  {
-    type: "input",
-    name: "office",
-    message: "What is this manager's office number?",
-  },
-];
-
-const engineerQues = [
-  {
-    type: "input",
-    name: "github",
-    message: "What is this engineer's GitHub username?",
-  },
-];
-
-const internQues = [
-  {
-    type: "input",
-    name: "school",
-    message: "What school does this intern attend",
-  },
-];
-
 const enderQues = [
   {
     type: "list",
@@ -76,29 +47,24 @@ const enderQues = [
   },
 ];
 
-function startFile(filename, data) {
-  fs.writeFile(filename, data, (err) =>
-    err ? console.log(err) : console.log("")
-  );
-}
-
 function init() {
   inquirer.prompt(companyNameQues).then((compData) => {
-    const newData = makePage(compData);
-    const filename = `./${compData.company
+    const filename = `./dist/${compData.company
       .toLowerCase()
       .split(" ")
       .join("_")}.html`;
 
-    startFile(filename, newData);
-    employeeInit(filename);
+    body = makePage(compData);
+    fs.writeFile(filename, body, (err) =>
+      err ? console.log(err) : employeeInit(filename)
+    );
   });
 }
 
-function repeatInit() {
+function repeatInit(filename) {
   inquirer.prompt(enderQues).then((res) => {
     if (res.repeat === "Yes") {
-      employeeInit();
+      employeeInit(filename);
     } else {
       //finish the file
     }
@@ -110,47 +76,10 @@ function employeeInit(filename) {
     empName = empData.name;
     id = empData.id;
     email = empData.email;
-    if (empData.role === "Manager") {
-      managerInit(filename, empName, id, email);
-    } else if (empData.role === "Engineer") {
-      engineerInit(empName, id, email);
-    } else if (empData.role === "Intern") {
-      internInit(empName, id, email);
-    } else {
-      const employee = new Employee(empName, id, email);
-      team.push(employee);
-      console.log(team);
-      repeatInit();
-    }
-  });
-}
-
-function managerInit(filename, name, id, email) {
-  inquirer.prompt(managerQues).then((manData) => {
-    appendPage.addManager(filename, name, id, email, manData.office);
-    repeatInit();
-  });
-}
-
-function engineerInit(name, id, email) {
-  inquirer.prompt(engineerQues).then((engData) => {
-    const engineer = new Engineer(name, id, email, engData.github);
-    team.push(engineer);
-    console.log(team);
-    repeatInit();
-  });
-}
-
-function internInit(name, id, email) {
-  inquirer.prompt(internQues).then((intData) => {
-    const intern = new Intern(name, id, email, intData.school);
-    team.push(intern);
-    console.log(team);
-    repeatInit();
+    role = empData.role;
+    const newCard = addCard(empName, id, email, role);
+    console.log(newCard);
   });
 }
 
 init();
-// TODO: Write inquirer to HTML
-
-// to use appendPage.addEmployee(name, id, email) etc

@@ -19,7 +19,7 @@ describe("Manager", () => {
       "notspiderman@gmail.com",
       111
     );
-    expect(manager.getOfficeNumber()).toEqual("Manager's Office Number: 111");
+    expect(manager.getOfficeNumber()).toEqual("Office Number: 111");
   });
 
   it("should return the role of a manager", () => {

@@ -20,9 +20,7 @@ describe("Intern", () => {
       "notspiderman@gmail.com",
       "Empire State University"
     );
-    expect(intern.getSchool()).toEqual(
-      "Intern School: Empire State University"
-    );
+    expect(intern.getSchool()).toEqual("School: Empire State University");
   });
 
   it("should return the role of an intern", () => {

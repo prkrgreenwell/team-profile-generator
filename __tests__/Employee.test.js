@@ -20,7 +20,7 @@ describe("Employee", () => {
 
   it("should return the name of an employee", () => {
     const employee = new Employee("Peter Parker", 3, "notspiderman@gmail.com");
-    expect(employee.getName()).toEqual("Employee Name: Peter Parker");
+    expect(employee.getName()).toEqual("Peter Parker");
   });
 
   it("should return the id of an employee", () => {
@@ -30,9 +30,7 @@ describe("Employee", () => {
 
   it("should return the email of an employee", () => {
     const employee = new Employee("Peter Parker", 3, "notspiderman@gmail.com");
-    expect(employee.getEmail()).toEqual(
-      "Employee email: notspiderman@gmail.com"
-    );
+    expect(employee.getEmail()).toEqual("Email: notspiderman@gmail.com");
   });
 
   it("should return the role of an employee", () => {

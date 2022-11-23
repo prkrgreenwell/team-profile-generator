@@ -20,7 +20,7 @@ describe("Engineer", () => {
       "notspiddell@gmail.com",
       "noSuperHeroHere"
     );
-    expect(engineer.getGitHub()).toEqual("Engineer GitHub: noSuperHeroHere");
+    expect(engineer.getGitHub()).toEqual("GitHub: noSuperHeroHere");
   });
 
   it("should be able to return the role of an engineer", () => {
