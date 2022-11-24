@@ -28,9 +28,11 @@ describe("Employee", () => {
     expect(employee.getId()).toEqual("Employee Id: 3");
   });
 
-  it("should return the email of an employee", () => {
+  it("should return the email of an employee with HTML functional links", () => {
     const employee = new Employee("Peter Parker", 3, "notspiderman@gmail.com");
-    expect(employee.getEmail()).toEqual("Email: notspiderman@gmail.com");
+    expect(employee.getEmail()).toEqual(
+      'Email: <a href="mailto:notspiderman@gmail.com" target="_blank">notspiderman@gmail.com</a>'
+    );
   });
 
   it("should return the role of an employee", () => {

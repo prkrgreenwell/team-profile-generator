@@ -1,7 +1,7 @@
 /** @format */
 function makePage(data) {
   const compName = data.company;
-  console.log(compName);
+
   return `
     <!DOCTYPE html>
     <html lang="en">
@@ -24,9 +24,7 @@ function makePage(data) {
         </div>
       </section>
       <div class="columns">
-        <div
-          class="column is-12-mobile is-6-tablet is-half-desktop is-one-third-widescreen is-one-quarter-fullhd"
-        >  
+
       `;
 }
 

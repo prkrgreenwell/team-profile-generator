@@ -13,14 +13,16 @@ describe("Engineer", () => {
     expect(engineer.github).toEqual("noSuperHeroHere");
   });
 
-  it("should be able to return the GitHub of an engineer", () => {
+  it("should be able to return the GitHub of an engineer in HTML functional language", () => {
     const engineer = new Engineer(
       "Peter Parker",
       3,
       "notspiddell@gmail.com",
       "noSuperHeroHere"
     );
-    expect(engineer.getGitHub()).toEqual("GitHub: noSuperHeroHere");
+    expect(engineer.getGitHub()).toEqual(
+      'GitHub: <a href="https://github.com/noSuperHeroHere" target="_blank">noSuperHeroHere</a>'
+    );
   });
 
   it("should be able to return the role of an engineer", () => {

@@ -1,10 +1,13 @@
 /** @format */
 
-// TODO: Import packages
 const inquirer = require("inquirer");
 const makePage = require("./src/makePage");
-const addCard = require("./src/addCard");
+const makeCard = require("./src/makeCard");
 const fs = require("fs");
+const Employee = require("./lib/employee");
+const Engineer = require("./lib/engineer");
+const Intern = require("./lib/intern");
+const Manager = require("./lib/manager");
 
 const companyNameQues = [
   {
@@ -38,6 +41,30 @@ const employeeQues = [
   },
 ];
 
+const managerQues = [
+  {
+    type: "input",
+    name: "office",
+    message: "What is this manager's office number?",
+  },
+];
+
+const engineerQues = [
+  {
+    type: "input",
+    name: "github",
+    message: "What is this engineer's GitHub username?",
+  },
+];
+
+const internQues = [
+  {
+    type: "input",
+    name: "school",
+    message: "What school does this intern attend",
+  },
+];
+
 const enderQues = [
   {
     type: "list",
@@ -66,7 +93,14 @@ function repeatInit(filename) {
     if (res.repeat === "Yes") {
       employeeInit(filename);
     } else {
-      //finish the file
+      const ending = `
+      </div>
+      </body>
+    </html>
+      `;
+      fs.appendFile(filename, ending, (err) =>
+        err ? console.log(err) : console.log("File Successfully Created")
+      );
     }
   });
 }
@@ -77,9 +111,67 @@ function employeeInit(filename) {
     id = empData.id;
     email = empData.email;
     role = empData.role;
-    const newCard = addCard(empName, id, email, role);
-    console.log(newCard);
+    const newCard = roleDetails(filename, empName, id, email, role);
   });
+}
+
+function roleDetails(filename, empName, id, email, role) {
+  if (role === "Manager") {
+    inquirer.prompt(managerQues).then((manData) => {
+      const manager = new Manager(empName, id, email, manData.office);
+      const card = makeCard(
+        manager.getName(),
+        manager.getRole(),
+        manager.getId(),
+        manager.getEmail(),
+        manager.getOfficeNumber()
+      );
+      fs.appendFile(filename, card, (err) =>
+        err ? console.log(err) : repeatInit(filename)
+      );
+    });
+  } else if (role === "Engineer") {
+    inquirer.prompt(engineerQues).then((engData) => {
+      const engineer = new Engineer(empName, id, email, engData.github);
+
+      const card = makeCard(
+        engineer.getName(),
+        engineer.getRole(),
+        engineer.getId(),
+        engineer.getEmail(),
+        engineer.getGitHub()
+      );
+      fs.appendFile(filename, card, (err) =>
+        err ? console.log(err) : repeatInit(filename)
+      );
+    });
+  } else if (role === "Intern") {
+    inquirer.prompt(internQues).then((intData) => {
+      const intern = new Intern(empName, id, email, intData.school);
+      const card = makeCard(
+        intern.getName(),
+        intern.getRole(),
+        intern.getId(),
+        intern.getEmail(),
+        intern.getSchool()
+      );
+      fs.appendFile(filename, card, (err) =>
+        err ? console.log(err) : repeatInit(filename)
+      );
+    });
+  } else {
+    const employee = new Employee(empName, id, email);
+    const card = makeCard(
+      employee.getName(),
+      employee.getRole(),
+      employee.getId(),
+      employee.getEmail(),
+      `<br />`
+    );
+    fs.appendFile(filename, card, (err) =>
+      err ? console.log(err) : repeatInit(filename)
+    );
+  }
 }
 
 init();
